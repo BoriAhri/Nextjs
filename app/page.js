@@ -1,13 +1,20 @@
 import { connectDB } from "@/util/database";
 import { MongoClient } from "mongodb";
 import Link from "next/link";
+import ListItem from "./ListItem";
 
 
 export default async function Home() {
 
   const db = (await connectDB).db("forum2")
   let result = await db.collection('post').find().toArray()
-  console.log(result)
+
+  result = result.map(post => ({
+    ...post,
+    _id: post._id.toString()
+  }));
+
+  
 
   return (
 
@@ -18,17 +25,7 @@ export default async function Home() {
         <button type="submit">작성</button>
       </form>
 
-      {result.map((a, i) => {
-        return (
-          <div key={i} className="main-bg-1">
-            <Link href={'/detail/' + result[i]._id}><h1>{a.title}</h1></Link>
-            <p>{JSON.stringify(a.currentTime, null, 2)}</p>
-            <button>✏️</button>
-            <button>🗑️</button>
-
-          </div>
-        );
-      })}
+      <ListItem result={result} />
     </div>
   );
 }
