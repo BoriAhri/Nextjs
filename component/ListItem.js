@@ -9,10 +9,11 @@ export default function ListItem({ result }) {
     return (
         <div className="list-1">
             {sortedResult.map((a, i) => {
+                const formattedTime = a.currentTime ? JSON.stringify(a.currentTime, null, 2).replace(/"/g, '') : '';
                 return (
                     <div key={i} className="main-bg-1">
                         <Link href={'/detail/' + a._id}><h1>{a.title}</h1></Link>
-                        <p>{JSON.stringify(a.currentTime, null, 2)}</p>
+                        <p>{formattedTime}</p>
                         
                         <Link href={'/edit/' + a._id}>✏️</Link>
                         
