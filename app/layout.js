@@ -8,7 +8,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <div className="navbar">
-          <Link href="/">뭐먹</Link>
+          <Link href="/" className="logo">뭐먹</Link>
           <Link href="/statistics">통계</Link>
         </div>
         {children}
