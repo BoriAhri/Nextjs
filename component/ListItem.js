@@ -16,7 +16,7 @@ export default function ListItem({ result }) {
                         
                         <Link href={'/edit/' + a._id}>✏️</Link>
                         
-                        <button onClick={(e) => {
+                        <span className="delete-icon" onClick={(e) => {
                             fetch('/api/delete', {
                                 method: 'DELETE',
                                 body: result[i]._id
@@ -27,7 +27,7 @@ export default function ListItem({ result }) {
                                         e.target.parentElement.style.display = 'none';
                                     }, 1000);
                                 })
-                        }}>🗑️</button>
+                        }}>🗑️</span>
                     </div>
                 );
             })}

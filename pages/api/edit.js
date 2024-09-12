@@ -2,13 +2,14 @@ import { connectDB } from "@/util/database";
 import { ObjectId } from "mongodb";
 
 export default async function handler(req, res) {
+
     if (req.method == 'POST') {
         console.log(req.body)
-        let change = { title : req.body.title }
+        let change = { title: req.body.title }
         let db = (await connectDB).db('forum2')
         let result = await db.collection('post')
-        .updateOne({_id : new ObjectId(req.body._id)},
-             { $set : change } ); 
+            .updateOne({ _id: new ObjectId(req.body._id) },
+                { $set: change });
         res.redirect(302, '/')
     }
 }

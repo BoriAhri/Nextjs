@@ -37,8 +37,12 @@
 .main-bg-1 a {
   text-decoration: none;
   color: #000;  
-  padding-left: 220px;
+  padding-left: 240px;
   padding-right: 10px;
+}
+
+.main-bg-1 p {
+  font-weight: bold;
 }
 
 
@@ -52,3 +56,6 @@
   background-color: rgb(255, 255, 255);
 }
 
+.delete-icon {
+  cursor: pointer; /* 마우스를 올렸을 때 커서 모양을 포인터로 변경 */
+}
