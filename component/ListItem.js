@@ -4,23 +4,25 @@ import Link from "next/link";
 
 export default function ListItem({ result }) {
 
-    const sortedResult = [...result].reverse();
-
+    
     return (
         <div className="list-1">
-            {sortedResult.map((a, i) => {
-                const formattedTime = a.currentTime ? JSON.stringify(a.currentTime, null, 2).replace(/"/g, '') : '';
+            {result.map((a, i) => {
+                const formattedTime = JSON.stringify(a.createdAt).slice(1, 21).replace('T', ' ');
                 return (
                     <div key={i} className="main-bg-1">
                         <Link href={'/detail/' + a._id}><h1>{a.title}</h1></Link>
-                        <p>{formattedTime}</p>
+                        <p>{formattedTime} ({a.dayName})</p>
                         
                         <Link href={'/edit/' + a._id}>✏️</Link>
                         
                         <span className="delete-icon" onClick={(e) => {
                             fetch('/api/delete', {
                                 method: 'DELETE',
-                                body: result[i]._id
+                                body: JSON.stringify({ id: a._id }),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
                             })
                                 .then(() => {
                                     e.target.parentElement.style.opacity = 0;

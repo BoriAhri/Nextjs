@@ -8,7 +8,8 @@ import FormComponent from "@/component/FormComponent";
 export default async function Home() {
 
   const db = (await connectDB).db("forum2")
-  let result = await db.collection('post').find().toArray()
+  let result = await db.collection('post').find().sort({ createdAt: -1}).toArray()
+  console.log(result)
 
   result = result.map(post => ({
     ...post,
