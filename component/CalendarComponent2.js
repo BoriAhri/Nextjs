@@ -1,139 +1,77 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import './CalendarComponent2.css';
 
 export default function CalendarComponent2({result}) {
-    const [currentDate, setCurrentDate] = useState(new Date());
-    const [year, setYear] = useState(currentDate.getFullYear());
-    const [month, setMonth] = useState(currentDate.getMonth());
-    const [events, setEvents] = useState({});
+    const [currentDate, setCurrentDate] = useState(() => new Date());
+    const [year, setYear] = useState(() => currentDate.getFullYear());
+    const [month, setMonth] = useState(() => currentDate.getMonth());
 
-    useEffect(() => {
-        console.log('Result in CalendarComponent2:', result);
-        setCurrentDate(new Date());
-        organizeEvents();
-    }, [result]);
-
-    const organizeEvents = () => {
+    const events = useMemo(() => {
         console.log('Organizing events...');
         const organizedEvents = {};
         result.forEach((event, index) => {
-            console.log(`Processing event ${index}:`, event);
             if (!event.createdAt) {
                 console.error(`Event ${index} has no createdAt field:`, event);
                 return;
             }
 
-            // 서버에서 생성된 시간 문자열을 파싱
-            const [datePart, timePart] = event.createdAt.split('. 오');
-            const [year, month, day] = datePart.split('. ').map(num => parseInt(num, 10));
-            const [hour, minute, second] = timePart.slice(2).split(':').map(num => parseInt(num, 10));
-            
-            // 한국 시간대로 Date 객체 생성
-            const date = new Date(year, month - 1, day, hour + (timePart.includes('후') ? 12 : 0), minute, second);
-            console.log(`Parsed date: ${date.toISOString()}`);
-
+            const date = parseKoreanDate(event.createdAt);
             if (isNaN(date.getTime())) {
                 console.error(`Invalid date for event ${index}:`, event.createdAt);
                 return;
             }
 
             const key = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
-            console.log(`Event key: ${key}`);
             if (!organizedEvents[key]) {
                 organizedEvents[key] = [];
             }
             organizedEvents[key].push(event);
         });
-        console.log('Organized events:', organizedEvents);
-        setEvents(organizedEvents);
-    };
+        return organizedEvents;
+    }, [result]);
 
-    const handlePrevMonth = () => {
-        if (month === 0) {
-            setYear(year - 1);
-            setMonth(11);
-        } else {
-            setMonth(month - 1);
-        }
-    };
+    useEffect(() => {
+        setCurrentDate(new Date());
+    }, []);
 
-    const handleNextMonth = () => {
-        if (month === 11) {
-            setYear(year + 1);
-            setMonth(0);
-        } else {
-            setMonth(month + 1);
-        }
-    };
-
-    const getDaysInMonth = (year, month) => {
-        return new Date(year, month + 1, 0).getDate();
-    };
-
-    const isToday = (day) => {
-        const today = new Date();
-        return day === today.getDate() && month === today.getMonth() && year === today.getFullYear();
-    };
-
-    const generateCalendar = (year, month) => {
-        console.log(`Generating calendar for ${year}-${month}`);
-        const daysInMonth = getDaysInMonth(year, month);
-        const firstDayOfMonth = new Date(year, month, 1).getDay();
-        const calendar = [];
-        let day = 1;
-
-        for (let i = 0; i < 6; i++) {
-            const week = [];
-            for (let j = 0; j < 7; j++) {
-                if (i === 0 && j < firstDayOfMonth) {
-                    week.push(null);
-                } else if (day > daysInMonth) {
-                    week.push(null);
-                } else {
-                    const key = `${year}-${month}-${day}`;
-                    const dayEvents = events[key] || [];
-                    console.log(`Events for ${key}:`, dayEvents);
-                    week.push({
-                        day,
-                        isToday: isToday(day),
-                        events: dayEvents
-                    });
-                    day++;
-                }
+    const handleMonthChange = (increment) => {
+        setMonth(prevMonth => {
+            const newMonth = prevMonth + increment;
+            if (newMonth === -1) {
+                setYear(prevYear => prevYear - 1);
+                return 11;
+            } else if (newMonth === 12) {
+                setYear(prevYear => prevYear + 1);
+                return 0;
             }
-            calendar.push(week);
-        }
-        return calendar;
+            return newMonth;
+        });
     };
-    
-    const calendar = generateCalendar(year, month);
+
+    const calendar = useMemo(() => generateCalendar(year, month, events), [year, month, events]);
 
     return (
         <div className='calendar-container'>
             <div className='calendar-header'>
-                <button onClick={handlePrevMonth}>이전 달</button>
+                <button onClick={() => handleMonthChange(-1)}>이전 달</button>
                 <span>{year}년 {month + 1}월</span> 
-                <button onClick={handleNextMonth}>다음 달</button>                
+                <button onClick={() => handleMonthChange(1)}>다음 달</button>                
             </div>
             <table className="calendar-table">
                 <thead>
                     <tr>
-                        <th>일</th>
-                        <th>월</th>
-                        <th>화</th>
-                        <th>수</th>
-                        <th>목</th>
-                        <th>금</th>
-                        <th>토</th>
+                        {['일', '월', '화', '수', '목', '금', '토'].map(day => (
+                            <th key={day}>{day}</th>
+                        ))}
                     </tr>
                 </thead>
                 <tbody>
                     {calendar.map((week, i) => (
                         <tr key={i}>
                             {week.map((dateObj, j) => (
-                                <td key={j} className={dateObj ? (dateObj.isToday ? 'calendar-day today' : 'calendar-day') : 'calendar-empty'}>
+                                <td key={j} className={getDateClassName(dateObj)}>
                                     {dateObj && (
                                         <>
                                             <div>{dateObj.day}</div>
@@ -149,5 +87,52 @@ export default function CalendarComponent2({result}) {
                 </tbody>
             </table>
         </div>
-    )
+    );
+}
+
+function parseKoreanDate(dateString) {
+    const [datePart, timePart] = dateString.split('. 오');
+    const [year, month, day] = datePart.split('. ').map(num => parseInt(num, 10));
+    const [hour, minute, second] = timePart.slice(2).split(':').map(num => parseInt(num, 10));
+    
+    return new Date(year, month - 1, day, hour + (timePart.includes('후') ? 12 : 0), minute, second);
+}
+
+function generateCalendar(year, month, events) {
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const firstDayOfMonth = new Date(year, month, 1).getDay();
+    const calendar = [];
+
+    let day = 1;
+    for (let i = 0; i < 6; i++) {
+        const week = [];
+        for (let j = 0; j < 7; j++) {
+            if ((i === 0 && j < firstDayOfMonth) || day > daysInMonth) {
+                week.push(null);
+            } else {
+                const key = `${year}-${month}-${day}`;
+                week.push({
+                    day,
+                    isToday: isToday(new Date(year, month, day)),
+                    events: events[key] || []
+                });
+                day++;
+            }
+        }
+        calendar.push(week);
+        if (day > daysInMonth) break;
+    }
+    return calendar;
+}
+
+function isToday(date) {
+    const today = new Date();
+    return date.getDate() === today.getDate() &&
+           date.getMonth() === today.getMonth() &&
+           date.getFullYear() === today.getFullYear();
+}
+
+function getDateClassName(dateObj) {
+    if (!dateObj) return 'calendar-empty';
+    return dateObj.isToday ? 'calendar-day today' : 'calendar-day';
 }
