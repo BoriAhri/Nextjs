@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function ListItem({ result }) {
 
-    
+
     return (
         <div className="list-1">
             {result.map((a, i) => {
@@ -13,9 +13,9 @@ export default function ListItem({ result }) {
                     <div key={i} className="main-bg-1">
                         <Link href={'/detail/' + a._id}><h1>{a.title}</h1></Link>
                         <p>{formattedTime} ({a.dayName})</p>
-                        
+
                         <Link href={'/edit/' + a._id}>✏️</Link>
-                        
+
                         <span className="delete-icon" onClick={(e) => {
                             fetch('/api/delete', {
                                 method: 'DELETE',
@@ -25,11 +25,8 @@ export default function ListItem({ result }) {
                                 }
                             })
                                 .then(() => {
-                                    e.target.parentElement.style.opacity = 0;
-                                    setTimeout(() => {
-                                        e.target.parentElement.style.display = 'none';
-                                    }, 1000);
-                                })
+                                    window.location.reload(); // 페이지 새로고침
+                                });
                         }}>🗑️</span>
                     </div>
                 );
