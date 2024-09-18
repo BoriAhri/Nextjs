@@ -1,0 +1,26 @@
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;  /* 이전과 다음 버튼 사이 간격 */
+    margin: 20px 0;
+}
+
+.paginationLink {
+    text-decoration: none;  /* 밑줄 없애기 */
+    padding: 10px 20px;  /* 버튼 모양 만들기 */
+    background-color: #0070f3;  /* 버튼 배경 색상 */
+    color: white;  /* 글자 색상 */
+    border-radius: 5px;  /* 모서리를 둥글게 */
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;  /* 호버 시 부드러운 색상 전환 */
+}
+
+.paginationLink:hover {
+    background-color: #005bb5;  /* 호버 시 배경 색상 변경 */
+}
+
+.disabled {
+    pointer-events: none;  /* 클릭할 수 없게 만듦 */
+    opacity: 0.5;  /* 흐리게 표시 */
+}

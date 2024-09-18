@@ -8,13 +8,13 @@
 }
 
 .navbar a {
-  margin-right: 20px;  
+  margin-right: 20px;
   text-decoration: none;
   color: black;
 }
 
 .main-bg {
-  width: 300px;  
+  width: 300px;
   padding: 20px;
 }
 
@@ -24,29 +24,54 @@
   border-radius: 10px;
   font-size: 12px;
   margin-bottom: 5px;
-  opacity : 1;
+  opacity: 1;
   transition: all 1s;
   background-color: rgb(230, 231, 245);
-  
+  display: flex;  /* 플렉스 박스를 사용하여 아이콘과 텍스트 정렬 */
+  flex-direction: column;
+  position: relative;  /* 삭제 및 수정 아이콘을 배치하기 위함 */
 }
 
 .main-bg-1:hover {
-  background-color: rgb(193, 208, 253)
+  background-color: rgb(193, 208, 253);
 }
 
 .main-bg-1 a {
   text-decoration: none;
-  color: #000;  
-  padding-left: 240px;
-  padding-right: 10px;
+  color: #000;
 }
 
 .main-bg-1 p {
   font-weight: bold;
 }
 
+/* 아이콘들이 네모박스 안에 들어가도록 설정 */
+.icon-container {
+  display: flex;
+  justify-content: flex-end; /* 오른쪽에 아이콘 배치 */
+  align-items: center; /* 수직으로 중앙 정렬 */
+  gap: 10px; /* 아이콘 간 간격 */
+}
 
-.main-input input{
+.edit-icon {
+  text-decoration: none;
+  color: #000;
+  font-size: 16px; /* 아이콘 크기를 동일하게 설정 */
+  display: inline-block;
+}
+
+.delete-icon {
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-size: 16px; /* 아이콘 크기를 동일하게 설정 */
+  color: #000;
+  padding: 0;
+  display: inline-block;
+  margin-left: 10px; /* 아이콘 간 간격을 위한 여백 */
+}
+
+.main-input input {
   margin-bottom: 10px;
   width: 150px;
   height: 30px;
@@ -54,8 +79,4 @@
   border-radius: 5px;
   border: 1px solid rgb(68, 44, 44);
   background-color: rgb(255, 255, 255);
-}
-
-.delete-icon {
-  cursor: pointer; /* 마우스를 올렸을 때 커서 모양을 포인터로 변경 */
 }

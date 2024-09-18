@@ -10,6 +10,7 @@ export default function RootLayout({ children }) {
         <div className="navbar">
           <Link href="/" className="logo">뭐먹</Link>
           <Link href="/calendar">달력</Link>
+          <Link href="/stats">통계</Link>
         </div>
         {children}
       </body>

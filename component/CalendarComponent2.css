@@ -7,7 +7,7 @@
     width: 100%;
     max-width: 1000px;
     margin: 20px auto;
-    font-family: 'Arial', sans-serif; /* 기본 폰트 */
+    font-family: 'Comic Sans MS', 'Arial', sans-serif; /* 기본 폰트 */
 }
 
 /* 캘린더 헤더 */
@@ -23,10 +23,11 @@
     border: none;
     color: #ffffff;
     padding: 10px 20px;
-    font-size: 14px;
+    font-size: 14px; /* 버튼 폰트 크기 */
     border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    font-family: 'Comic Sans MS', 'Arial', sans-serif; /* 버튼 폰트 */
 }
 
 .calendar-header button:hover {
@@ -34,9 +35,10 @@
 }
 
 .calendar-header span {
-    font-size: 18px;
+    font-size: 18px; /* 헤더 폰트 크기 */
     font-weight: bold;
     color: #333333;
+    font-family: 'Comic Sans MS', 'Arial', sans-serif; /* 헤더 폰트 */
 }
 
 /* 캘린더 테이블 */
@@ -50,6 +52,7 @@
     color: #7d7d7d; /* 요일 색상 */
     font-weight: bold;
     padding-bottom: 10px;
+    font-family: 'Comic Sans MS', 'Arial', sans-serif; /* 테이블 헤더 폰트 */
 }
 
 .calendar-table td {
@@ -59,12 +62,14 @@
     vertical-align: top; /* 위쪽 정렬 */
     padding: 5px;
     position: relative;
+    font-family: 'Comic Sans MS', 'Arial', sans-serif; /* 테이블 데이터 폰트 */
 }
 
 .calendar-day {
     background-color: #f4f7fe; /* 기본 날짜 셀 배경색 */
     color: #333333;
     cursor: pointer;
+    font-family: 'Comic Sans MS', 'Arial', sans-serif; /* 날짜 폰트 */
 }
 
 .calendar-day:hover {
@@ -80,6 +85,33 @@
     color: #ffffff; /* 선택된 날짜 텍스트 색상 */
 }
 
+/* 이벤트 링크 스타일 */
+.event-title {
+    display: block;
+    color: #2924c0; /* 링크 기본 색상 */    
+    margin-top: 5px; /* 이벤트 제목 간격 */
+    padding: 5px; /* 패딩 추가 */
+    border-radius: 15px; /* 더 둥근 모서리 */
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+    font-weight: 700; /* 폰트 두께 조정 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
+    font-family: 'Comic Sans MS', 'Arial', sans-serif; /* 둥글둥글한 글씨체 */
+    font-size: 14px; /* 이벤트 제목 폰트 크기 */
+}
+
+.event-title:hover {
+    background-color: #e0e7ff; /* 링크 호버 시 배경색 */
+    color: #4f4bda; /* 링크 호버 시 색상 */
+    transform: translateY(-2px); /* 호버 시 살짝 위로 이동 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 호버 시 그림자 강화 */
+}
+
+/* 기본 a 태그 스타일 재정의 */
+a {
+    text-decoration: none; /* 기본적으로 밑줄 제거 */
+    color: inherit; /* 링크의 색상을 상속 */
+}
+
 /* 반응형 디자인 */
 @media (max-width: 768px) {
     .calendar-container {
@@ -88,16 +120,16 @@
 
     .calendar-header button {
         padding: 8px 15px;
-        font-size: 12px;
+        font-size: 12px; /* 반응형 버튼 폰트 크기 */
     }
 
     .calendar-header span {
-        font-size: 16px;
+        font-size: 16px; /* 반응형 헤더 폰트 크기 */
     }
 
     .calendar-table td {
         height: 50px;
-        font-size: 14px;
+        font-size: 14px; /* 반응형 테이블 데이터 폰트 크기 */
     }
 }
 

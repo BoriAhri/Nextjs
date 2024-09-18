@@ -1,5 +1,6 @@
 import { connectDB } from "@/util/database"
 import { ObjectId } from "mongodb"
+import Link from "next/link"
 
 export default async function Detail(props) {
 
@@ -10,7 +11,8 @@ export default async function Detail(props) {
     return (
         <div>
             <h4>{result.title} 맛있었노</h4>
-            <p>{result.currentTime}</p>
+            <p>{result.createdAt}</p>
+            <Link href={'/edit/' + result._id} className="edit-icon">✏️</Link>
         </div>
     )
 }

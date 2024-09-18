@@ -1,6 +1,7 @@
 import CalendarComponent2 from "@/component/CalendarComponent2";
 import { connectDB } from "@/util/database";
 
+
 export default async function Calendar() {
 
     const db = (await connectDB).db("forum2")
@@ -13,7 +14,7 @@ export default async function Calendar() {
 
     return (
         <div>
-            <CalendarComponent2 result={result}/>
+            <CalendarComponent2 result={result} />
         </div>
     );
 }
